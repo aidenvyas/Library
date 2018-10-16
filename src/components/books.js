@@ -1,43 +1,43 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import store from '../store/store'
-const books = props => {
-   console.log(store.getState())
-  return (
-    <div>
-      <div>BOOKS LIST:</div>
-
-      <hr />
+import store from "../store/store";
+import Search from "./search";
+import Display from "../components/displayBooks";
+class Books extends Component {
+  render() {
+    console.log(store.getState());
+    if (this.props.show) {
+      var search = <Search results={this.props.results} />;
+    } else {
+      var book = <Display books={this.props.booksList} />;
+    }
+    return (
       <div>
-        <form onSubmit={event => props.handleSubmit(event, props.searchValue)}>
-          <input value={props.searchValue} onChange={props.handleInputChange} />
-        </form>
+        <div>{search}</div>
+        <div>
+          <form
+            onSubmit={event =>
+              this.props.handleSubmit(event, this.props.searchValue)
+            }
+          >
+            <input
+              value={this.props.searchValue}
+              onChange={this.props.handleInputChange}
+            />
+          </form>
+        </div>
+        <div>{book}</div>
       </div>
-      <hr />
-      <div>
-        {props.booksList.map(book => {
-          return (
-            <div
-              className="card"
-              style={{ width: "18rem", display: "inline-block" }}
-            >
-              <div className="card-body">
-                <h5 className="card-title">{book.title}</h5>
-                <h6 className="card-subtitle mb-2 text-muted">{book.author}</h6>
-                <p className="card-text">{book.language}</p>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return {
     booksList: state.books,
-    searchValue: state.searchValue
+    searchValue: state.searchValue,
+    results: state.results,
+    show: state.showToggle
   };
 };
 
@@ -60,4 +60,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(books);
+)(Books);

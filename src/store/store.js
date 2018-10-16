@@ -3,7 +3,8 @@ import data from "./data.json";
 const initialState = {
   books: data,
   searchValue: "",
-  results: []
+  results: [],
+  showToggle: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,12 +13,19 @@ const reducer = (state = initialState, action) => {
     case "INPUTCHANGE":
       return { ...state, searchValue: action.value };
     case "SUBMIT":
-    
-    const {value} = action;
-    const results = state.books.filter((val) => val.title===value);
-    console.log("results of search ",results)
-    return {...state, value, results};
-     
+      const { value } = action;
+      const result = state.books.filter(val =>
+        val.title.toLowerCase().includes(value.toLowerCase())
+      );
+      var show = false;
+      if (result.length > 0) {
+        show = true;
+      }
+
+      console.log("results of search ", result);
+
+      return { ...state, results: result, showToggle: show };
+
     default:
       return state;
   }
