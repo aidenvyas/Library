@@ -1,5 +1,5 @@
 import React from "react";
-
+import Details from "../components/details";
 const books = props => {
   return (
     <div>

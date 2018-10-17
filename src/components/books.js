@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import store from "../store/store";
-import Search from "./search";
 import Display from "../components/displayBooks";
+
 class Books extends Component {
   render() {
     console.log(store.getState());
     if (this.props.show) {
-      var search = <Search results={this.props.results} />;
+      var search = <Display books={this.props.results}  />;
     } else {
       var book = <Display books={this.props.booksList} />;
     }

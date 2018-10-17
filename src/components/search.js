@@ -7,7 +7,7 @@ const search = props => {
       <div>
         {props.results.map(book => {
           return (
-            <div
+            <div 
               className="card"
               style={{ width: "18rem", display: "inline-block" }}
             >
