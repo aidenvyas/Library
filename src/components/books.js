@@ -7,10 +7,25 @@ class Books extends Component {
   render() {
     console.log(store.getState());
     if (this.props.show) {
-      var search = <Display books={this.props.results}  />;
+      var search = (
+        <Display
+          books={this.props.results}
+          open={this.handleOpenModal}
+          close={this.handleCloseModal}
+        />
+      );
     } else {
-      var book = <Display books={this.props.booksList} />;
+      var book = (
+        <Display
+          books={this.props.booksList}
+          open={this.handleOpenModal}
+          close={this.handleCloseModal}
+        />
+      );
     }
+
+   
+    
     return (
       <div>
         <div>{search}</div>
@@ -37,7 +52,8 @@ const mapStateToProps = state => {
     booksList: state.books,
     searchValue: state.searchValue,
     results: state.results,
-    show: state.showToggle
+    show: state.showToggle,
+    tog: state.toggle
   };
 };
 
@@ -50,8 +66,16 @@ const mapDispatchToProps = dispatch => {
     handleSubmit: (event, inp) => {
       event.preventDefault();
       console.log("submit");
-
       const action = { type: "SUBMIT", value: inp };
+      dispatch(action);
+    },
+    handleOpenModal: () => {
+      alert("MODAL OPEN!");
+      const action = { type: "OPENMODAL" };
+      dispatch(action);
+    },
+    handleCloseModal: () => {
+      const action = { type: "CLOSEMODAL" };
       dispatch(action);
     }
   };

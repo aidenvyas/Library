@@ -1,6 +1,6 @@
 import React from "react";
-import Details from "../components/details";
 const books = props => {
+ 
   return (
     <div>
       <h3>BOOKS LIST:</h3>
@@ -10,6 +10,8 @@ const books = props => {
           <div
             className="card"
             style={{ width: "18rem", display: "inline-block" }}
+            key={book.id}
+            onClick={props.openBook}
           >
             <div className="card-body">
               <h5 className="card-title">{book.title}</h5>
