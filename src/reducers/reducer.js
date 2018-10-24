@@ -3,9 +3,10 @@ const initialState = {
   books: data,
   searchValue: "",
   results: [],
-  showToggle: false,
-  pop: "",
-  modalIsOpen: false
+  modal: false,
+  show: "",
+  modalopen: false,
+  modalcontent: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -22,13 +23,28 @@ const reducer = (state = initialState, action) => {
       if (result.length > 0) {
         show = true;
       }
-      console.log("results of search ", result);
-      return { ...state, results: result, showToggle: show };
-    case "OPENMODAL":
-      console.log(state.modalIsOpen, "modal status");
-      return { ...state, modalIsOpen: true };
-    case "CLOSEMODAL":
-      return { ...state, modalIsOpen: false };
+      if (!value) {
+        return {
+          ...state,
+          books: data,
+          showToggle: show,
+          searchValue: action.value
+        };
+      }
+      console.log(result, "in reducer");
+      return {
+        ...state,
+        books: result,
+        showToggle: show,
+        searchValue: action.value
+      };
+    case "MODAL":
+      return {
+        ...state,
+        modalopen: !action.value.status,
+        modalcontent: action.value.book
+      };
+
     default:
       return state;
   }

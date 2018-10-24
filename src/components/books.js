@@ -2,30 +2,38 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import store from "../store/store";
 import Display from "../components/displayBooks";
-
 class Books extends Component {
   render() {
     console.log(store.getState());
-    if (this.props.show) {
-      var search = (
-        <Display
-          books={this.props.results}
-          open={this.handleOpenModal}
-          close={this.handleCloseModal}
-        />
-      );
-    } else {
-      var book = (
-        <Display
-          books={this.props.booksList}
-          open={this.handleOpenModal}
-          close={this.handleCloseModal}
-        />
-      );
-    }
+    // if (this.props.show) {
+    //   var search = (
+    //     <Display
+    //       books={this.props.results}
+    //       handletoggle={this.props.handlestrapmodal}
+    //       modalopen={this.props.modalopen}
+    //       modalcontent={this.props.modalcontent}
+    //     />
+    //   );
+    // } else {
+    //   var book = (
+    //     <Display
+    //       books={this.props.booksList}
+    //       handletoggle={this.props.handlestrapmodal}
+    //       modalopen={this.props.modalopen}
+    //       modalcontent={this.props.modalcontent}
+    //     />
+    //   );
+    // }
 
-   
-    
+         const search = (
+          <Display
+            books={this.props.booksList}
+            handletoggle={this.props.handlestrapmodal}
+            modalopen={this.props.modalopen}
+            modalcontent={this.props.modalcontent}
+          />
+        );
+
     return (
       <div>
         <div>{search}</div>
@@ -35,13 +43,13 @@ class Books extends Component {
               this.props.handleSubmit(event, this.props.searchValue)
             }
           >
+          </form>
             <input
               value={this.props.searchValue}
               onChange={this.props.handleInputChange}
             />
-          </form>
         </div>
-        <div>{book}</div>
+        {/* <div>{book}</div> */}
       </div>
     );
   }
@@ -53,29 +61,31 @@ const mapStateToProps = state => {
     searchValue: state.searchValue,
     results: state.results,
     show: state.showToggle,
-    tog: state.toggle
+    modalopen: state.modalopen,
+    modalcontent: state.modalcontent
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    // handleInputChange: event => {
+    //   const action = { type: "INPUTCHANGE", value: event.target.value };
+    //   dispatch(action);
+    // },
     handleInputChange: event => {
-      const action = { type: "INPUTCHANGE", value: event.target.value };
+      console.log(event);
+      const action = { type: "SUBMIT", value: event.target.value };
       dispatch(action);
     },
-    handleSubmit: (event, inp) => {
-      event.preventDefault();
-      console.log("submit");
-      const action = { type: "SUBMIT", value: inp };
-      dispatch(action);
-    },
-    handleOpenModal: () => {
-      alert("MODAL OPEN!");
-      const action = { type: "OPENMODAL" };
-      dispatch(action);
-    },
-    handleCloseModal: () => {
-      const action = { type: "CLOSEMODAL" };
+    // handleSubmit: (event, inp) => {
+    //   event.preventDefault();
+    //   const action = { type: "SUBMIT", value: inp };
+    //   dispatch(action);
+    // },
+
+
+    handlestrapmodal: (status, book) => {
+      const action = { type: "MODAL", value: { book, status } };
       dispatch(action);
     }
   };
