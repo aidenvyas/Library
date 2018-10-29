@@ -3,11 +3,11 @@ import React from "react";
 const search = props => {
   return (
     <div>
-    <h3>  SEARCH RESULTS:</h3>
+      <h3> SEARCH RESULTS:</h3>
       <div>
         {props.results.map(book => {
           return (
-            <div 
+            <div
               className="card"
               style={{ width: "18rem", display: "inline-block" }}
             >

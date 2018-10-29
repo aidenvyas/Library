@@ -31,7 +31,6 @@ const reducer = (state = initialState, action) => {
           searchValue: action.value
         };
       }
-      console.log(result, "in reducer");
       return {
         ...state,
         books: result,

@@ -25,7 +25,7 @@ class Books extends Component {
     //   );
     // }
 
-         const search = (
+         const books = (
           <Display
             books={this.props.booksList}
             handletoggle={this.props.handlestrapmodal}
@@ -36,7 +36,7 @@ class Books extends Component {
 
     return (
       <div>
-        <div>{search}</div>
+        <div>{books}</div>
         <div>
           <form
             onSubmit={event =>
