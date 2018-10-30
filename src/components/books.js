@@ -2,9 +2,39 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import store from "../store/store";
 import Display from "../components/displayBooks";
+import axios from "axios";
+const addToFav = (id, token) => {
+  console.log(id,"id in ",token,"token in")
+  axios
+    .post("http://localhost:3001/favourite/?favId="+id,{}, {
+      headers: {
+        // "Content-Type": "application/json",
+        'Authorization':"bearer "+ token
+      }
+    })
+    .then((res) => {
+      // if(res)
+      if(res.data.error){
+        alert(res.data.error)
+      }else{
+          console.log(res, " in axios")
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 class Books extends Component {
+  componentWillMount() {
+    var bok;
+    axios.get("http://localhost:3001/books").then(res => {
+      console.log(res, " books from db");
+      bok = res.data;
+      this.props.handleBooks(bok);
+    });
+  }
+
   render() {
-    console.log(store.getState());
     // if (this.props.show) {
     //   var search = (
     //     <Display
@@ -25,30 +55,35 @@ class Books extends Component {
     //   );
     // }
 
-         const books = (
-          <Display
-            books={this.props.booksList}
-            handletoggle={this.props.handlestrapmodal}
-            modalopen={this.props.modalopen}
-            modalcontent={this.props.modalcontent}
-          />
-        );
+    const search = (
+      <Display
+        books={this.props.booksList}
+        handletoggle={this.props.handlestrapmodal}
+        modalopen={this.props.modalopen}
+        modalcontent={this.props.modalcontent}
+        favourite={this.props.handleFavourite}
+        token={this.props.token}
+      />
+    );
 
     return (
       <div>
-        <div>{books}</div>
-        <div>
+        <label>
+          <strong>Type To search:</strong>{" "}
+          <input
+            value={this.props.searchValue}
+            onChange={this.props.handleInputChange}
+          />
+        </label>
+        <div>{search}</div>
+
+        {/* <div>
           <form
             onSubmit={event =>
               this.props.handleSubmit(event, this.props.searchValue)
             }
-          >
-          </form>
-            <input
-              value={this.props.searchValue}
-              onChange={this.props.handleInputChange}
-            />
-        </div>
+          />
+        </div> */}
         {/* <div>{book}</div> */}
       </div>
     );
@@ -62,18 +97,28 @@ const mapStateToProps = state => {
     results: state.results,
     show: state.showToggle,
     modalopen: state.modalopen,
-    modalcontent: state.modalcontent
+    modalcontent: state.modalcontent,
+    id: state.favourite,
+    token: state.token,
+    apierrors: state.apierrors
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    // handleInputChange: event => {
-    //   const action = { type: "INPUTCHANGE", value: event.target.value };
-    //   dispatch(action);
-    // },
+    handleFavourite: (id, token) => {
+
+      addToFav(id, token);
+      const action = { type: "FAVOURITE", value: id };
+      dispatch(action);
+    },
+
+    handleBooks: bok => {
+      const action = { type: "BOOKS", value: bok };
+      dispatch(action);
+    },
+
     handleInputChange: event => {
-      console.log(event);
       const action = { type: "SUBMIT", value: event.target.value };
       dispatch(action);
     },
@@ -82,7 +127,6 @@ const mapDispatchToProps = dispatch => {
     //   const action = { type: "SUBMIT", value: inp };
     //   dispatch(action);
     // },
-
 
     handlestrapmodal: (status, book) => {
       const action = { type: "MODAL", value: { book, status } };

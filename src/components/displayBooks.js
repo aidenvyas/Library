@@ -11,7 +11,7 @@ const books = props => {
           <div
             className="card"
             style={{ width: "18rem", display: "inline-block" }}
-            key={book.id}
+            key={book._id}
           >
             <div className="card-body">
               <h5 className="card-title">{book.title}</h5>
@@ -28,9 +28,11 @@ const books = props => {
         );
       })}
       <Modal
-        modal={props.modalopen}
+        moda  l={props.modalopen}
+        favourite={props.favourite}
         content={props.modalcontent}
         toggle={props.handletoggle}
+        token={props.token}
       />
     </div>
   );

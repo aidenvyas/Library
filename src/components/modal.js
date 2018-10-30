@@ -12,10 +12,16 @@ const modal = props => {
         <ModalHeader toggle={props.toggle}>Book Details</ModalHeader>
         <ModalBody>
           {props.content
-            ? props.content.id + " : " + props.content.title
+            ? props.content.title + " Author: " + props.content.author
             : "Details cannot be fetched at this time."}
         </ModalBody>
         <ModalFooter>
+          <Button
+            color="primary"
+            onClick={() => props.favourite(props.content._id,props.token)}
+          >
+            Add To Fav's
+          </Button>
           <Button color="secondary" onClick={() => props.toggle(true)}>
             Close
           </Button>
