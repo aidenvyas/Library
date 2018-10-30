@@ -2,7 +2,7 @@ import React from "react";
 
 const header = props => {
    return (
-    <div>
+    <div className="container">
       <form onSubmit={props.onsubmit}>
         <label>
           Enter UserName:
@@ -11,6 +11,7 @@ const header = props => {
           <input type="password" name="password" onChange={props.onchange} />
           <hr />
           <button type="submit"> LOGIN!</button>
+          <button type="submit" onClick={props.logout}> LOGOUT!</button>
         </label>
       </form>
     </div>

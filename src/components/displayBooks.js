@@ -33,6 +33,7 @@ const books = props => {
         content={props.modalcontent}
         toggle={props.handletoggle}
         token={props.token}
+        unfavour={props.unfavour}
       />
     </div>
   );

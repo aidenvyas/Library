@@ -3,35 +3,61 @@ import { connect } from "react-redux";
 import store from "../store/store";
 import Display from "../components/displayBooks";
 import axios from "axios";
+
+const removeFav = (id, token) => {
+  if (token) {
+    axios
+      .delete("http://localhost:3001/favourite/?favId=" + id, {
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: "bearer " + token
+        }
+      })
+      .then(res => {
+        console.log("removed from fav");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+};
 const addToFav = (id, token) => {
-  console.log(id,"id in ",token,"token in")
+  console.log(id, "id in ", token, "token in");
   axios
-    .post("http://localhost:3001/favourite/?favId="+id,{}, {
-      headers: {
-        // "Content-Type": "application/json",
-        'Authorization':"bearer "+ token
+    .post(
+      "http://localhost:3001/favourite/?favId=" + id,
+      {},
+      {
+        headers: {
+          // "Content-Type": "application/json",
+          Authorization: "bearer " + token
+        }
       }
-    })
-    .then((res) => {
+    )
+    .then(res => {
       // if(res)
-      if(res.data.error){
-        alert(res.data.error)
-      }else{
-          console.log(res, " in axios")
+      if (res.data.error) {
+        alert(res.data.error);
+      } else {
+        console.log(res, " in axios");
       }
     })
-    .catch((err) => {
+    .catch(err => {
       console.log(err);
     });
 };
 class Books extends Component {
   componentWillMount() {
     var bok;
-    axios.get("http://localhost:3001/books").then(res => {
-      console.log(res, " books from db");
-      bok = res.data;
-      this.props.handleBooks(bok);
-    });
+    axios
+      .get("http://localhost:3001/books")
+      .then(res => {
+        bok = res.data;
+        this.props.handleBooks(bok);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -62,6 +88,7 @@ class Books extends Component {
         modalopen={this.props.modalopen}
         modalcontent={this.props.modalcontent}
         favourite={this.props.handleFavourite}
+        unfavour={this.props.handleUnfavour}
         token={this.props.token}
       />
     );
@@ -106,8 +133,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    handleUnfavour: (id, token) => {
+      removeFav(id, token);
+      const action = { type: "UNFAVOUR", value: id };
+      dispatch(action);
+    },
     handleFavourite: (id, token) => {
-
       addToFav(id, token);
       const action = { type: "FAVOURITE", value: id };
       dispatch(action);
@@ -124,7 +155,7 @@ const mapDispatchToProps = dispatch => {
     },
     // handleSubmit: (event, inp) => {
     //   event.preventDefault();
-    //   const action = { type: "SUBMIT", value: inp }; 
+    //   const action = { type: "SUBMIT", value: inp };
     //   dispatch(action);
     // },
 
