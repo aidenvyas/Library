@@ -72,6 +72,7 @@ class Books extends Component {
           <strong>Type To search:</strong>{" "}
           <input
             value={this.props.searchValue}
+          
             onChange={this.props.handleInputChange}
           />
         </label>
