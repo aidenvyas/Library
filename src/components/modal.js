@@ -18,9 +18,25 @@ const modal = props => {
         <ModalFooter>
           <Button
             color="primary"
-            onClick={() => props.favourite(props.content._id,window.sessionStorage.getItem('token'))}
+            onClick={() =>
+              props.favourite(
+                props.content._id,
+                window.sessionStorage.getItem("token")
+              )
+            }
           >
             Add To Fav's
+          </Button>
+          <Button
+            color="danger"
+            onClick={() =>
+              props.unfavour(
+                props.content._id,
+                window.sessionStorage.getItem("token")
+              )
+            }
+          >
+            Remove from Fav's
           </Button>
           <Button color="secondary" onClick={() => props.toggle(true)}>
             Close

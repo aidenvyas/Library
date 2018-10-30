@@ -10,7 +10,9 @@ const initialState = {
   modalcontent: null,
   username: "",
   password: "",
+  email: "",
   submit: false,
+  signup: false,
   token: "",
   favourites: "",
   apierrors: ""
@@ -24,8 +26,10 @@ const reducer = (state = initialState, action) => {
     case "INPUTCHANGE":
       if (action.name === "username") {
         return { ...state, username: action.value };
-      } else {
+      } else if (action.name === "password") {
         return { ...state, password: action.value };
+      } else {
+        return { ...state, email: action.value };
       }
 
     case "SUBMIT":
@@ -52,14 +56,12 @@ const reducer = (state = initialState, action) => {
         searchValue: action.value
       };
     case "MODAL":
-      console.log(action.value.status, action.value.book, "wertyuio");
       return {
         ...state,
         modalopen: !action.value.status,
         modalcontent: action.value.book
       };
     case "FORMSUBMIT":
-      console.log("logging");
       return {
         ...state,
         submit: true
@@ -67,15 +69,26 @@ const reducer = (state = initialState, action) => {
     case "TOKEN":
       window.sessionStorage.setItem("token", action.value);
 
-      console.log(window.sessionStorage.getItem("token"));
       return {
         ...state,
         token: action.value
       };
+    case "LOGOUT":
+      window.sessionStorage.clear();
+      return state;
+
     case "FAVOURITE": {
-      console.log(action.value, " favourite id");
       return { ...state, favourites: action.value };
     }
+    case "SIGNUP": {
+      return { ...state, signup: !state.signup };
+    }
+    case "UNFAVOUR": {
+      console.log("unfav");
+      // return {...state,favourites:stat.favourites.filter((i)!=action.value)}
+      return state;
+    }
+
     default:
       return state;
   }
