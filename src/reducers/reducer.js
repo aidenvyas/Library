@@ -13,7 +13,7 @@ const initialState = {
   submit: false,
   token: "",
   favourites: "",
-  apierrors:""
+  apierrors: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -52,6 +52,7 @@ const reducer = (state = initialState, action) => {
         searchValue: action.value
       };
     case "MODAL":
+      console.log(action.value.status, action.value.book, "wertyuio");
       return {
         ...state,
         modalopen: !action.value.status,
@@ -64,12 +65,15 @@ const reducer = (state = initialState, action) => {
         submit: true
       };
     case "TOKEN":
+      window.sessionStorage.setItem("token", action.value);
+
+      console.log(window.sessionStorage.getItem("token"));
       return {
         ...state,
         token: action.value
       };
     case "FAVOURITE": {
-      console.log(action.value," favourite id")
+      console.log(action.value, " favourite id");
       return { ...state, favourites: action.value };
     }
     default:

@@ -28,7 +28,7 @@ const books = props => {
         );
       })}
       <Modal
-        moda  l={props.modalopen}
+        modal={props.modalopen}
         favourite={props.favourite}
         content={props.modalcontent}
         toggle={props.handletoggle}

@@ -124,7 +124,7 @@ const mapDispatchToProps = dispatch => {
     },
     // handleSubmit: (event, inp) => {
     //   event.preventDefault();
-    //   const action = { type: "SUBMIT", value: inp };
+    //   const action = { type: "SUBMIT", value: inp }; 
     //   dispatch(action);
     // },
 
