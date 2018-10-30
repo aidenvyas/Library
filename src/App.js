@@ -3,21 +3,23 @@ import "./App.css";
 import Books from "./components/books";
 import { Provider } from "react-redux";
 import store from "./store/store";
-import Header from "./components/header";
 import { connect } from "react-redux";
+import { Route, Switch, Redirect } from "react-router-dom";
 import axios from "axios";
+import Header from "./components/header";
 import SignUp from "./components/signup";
+import HeaderNav from "./components/headerNav";
+
 class App extends Component {
   componentDidUpdate() {
     if (this.props.submitted) {
-      console.log(this.props.username,"users ")
-      console.log(this.props.password,"veda")
       axios
         .post("http://localhost:3001/user/login", {
           username: this.props.username,
           password: this.props.password
         })
         .then(response => {
+          this.props.history.push("/path");
           this.props.handleToken(response.data.token);
         })
         .catch(error => {
@@ -33,7 +35,7 @@ class App extends Component {
         })
         .then(resposne => {
           // alert("Thanks for signing Up!");
-          console.log('signup done')
+          console.log("signup done");
         })
         .catch(err => {
           console.log(err);
@@ -46,22 +48,25 @@ class App extends Component {
 
     return (
       <div className="App">
-        <div>
-          <Header
+        <HeaderNav />
+        <Switch>
+          <Route
+            exact
+            path="/signup"
+            signup={this.props.handleSignup}
+            onchange={this.props.handleInputChange}
+            component={SignUp}
+          />
+          <Route
+            path="/login"
             onchange={this.props.handleInputChange}
             onsubmit={this.props.handleSubmit}
             logout={this.props.handleLogout}
+            component={Header}
           />
-        </div>
-        <hr />
-        <SignUp
-          signup={this.props.handleSignup}
-          onchange={this.props.handleInputChange}
-        />
-        <div>
-          <Books />
-          <hr />
-        </div>
+          <Route path="/books" component={Books} />
+          <Redirect from="/" to="/" />
+        </Switch>
       </div>
     );
   }
